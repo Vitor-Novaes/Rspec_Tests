@@ -1,4 +1,6 @@
 require 'models/calculator'
+require 'models/courses'
+require 'models/students'
 
 $counter = 0
 
@@ -22,12 +24,17 @@ describe CalculatorSimple, "4 operações", type: :model do
         it {expect(sort).to eq("Uva").or eq("Laranja").or eq("Banana")}
     end
 
+    
+    
+end
+
+describe "teste" do
     context "Testes Let" do
         let(:count) { $counter += 1 }
 
         it 'Memoriza valor' do
-           expect(count).to eq(1) # => count = 1     
-           expect(count).to eq(1) # => count = 1 (em cache, chamado só na primeira vez)     
+        expect(count).to eq(1) # => count = 1     
+        expect(count).to eq(1) # => count = 1 (em cache, chamado só na primeira vez)     
         end
         
         it 'Não cacheado' do
@@ -35,10 +42,8 @@ describe CalculatorSimple, "4 operações", type: :model do
         end
 
     end
-
-
 end
-    
+
 # Matchers de comparação
     # be : compara objetos
     # eq : compara valores
@@ -156,6 +161,64 @@ RSpec::Matchers.define :be_a_multiple_of do |expected| #Parametro => expected
 
 end
 
-describe 21, "Customizando Macther multiplo"  do
+describe 21, "Customizando Macther multiplo", type: 'sobrescrevendo'  do
     it {is_expected.to be_a_multiple_of(3)}
 end
+
+
+# Tags Filters :
+    # describe CalculatorSimple, "4 operações", type: :model do
+    # $ rspec -t type:model
+    # describe CalculatorSimple, "4 operações", type: :testes_calculadora do
+    # $ rspec -t type:testes_calculadora
+
+
+describe "Test Double" do
+    it 'testando' do
+        user = double('User') # Objeto Falso
+        allow(user).to receive_messages(name: "Vitor Novaes", password: "123456")
+        puts user.name
+        puts user.password
+    end
+
+end
+
+# Stubs: Forçar uma resposta específica de um colaborador
+describe "Stub" do
+    it '#Has_Finished?' do
+       student = Students.new
+       course = Courses.new
+        
+        allow(student).to receive(:has_finished?) #Retorno de um método Stub
+            .with(an_instance_of(course)) #Argumento
+            .and_return(true) #Retorno
+        
+        course_finished = student.has_finished?(course)
+        expect(course_finished).to be_truthy
+    end
+
+    it '#foo' do
+        student = double('Student') # Objeto Falso
+        
+        allow(student).to receive(:foo) do |arg|
+            if arg == :hello
+                "Olá"
+            elsif arg ==:hi
+                "Hi!!"
+            end
+        end
+        
+        expect(student.foo(:hello)).to eq("Olá")
+        expect(student.foo(:hi)).to eq("Hi!!")
+    end
+
+    it 'Errors' do
+        student = double('Student') # Objeto Falso
+        
+        allow(student).to receive(:bar).and_raise(RuntimeError)
+        
+        expect{student.bar}.to raise_error(RuntimeError)
+    end
+
+end
+

@@ -19,15 +19,15 @@ require 'helpers/helper' # Importando Helper para teste
 RSpec.configure do |config|
   
   # Antes dos testes :
-  config.before(:all) do
-    puts "Iniciando Testes com before(:all)"
-  end
-  config.before(:suite) do
-    puts "Bloco de código antes dos testes"
-  end
-  config.after(:suite) do
-    puts "Bloco de código depois dos testes"
-  end
+  # config.before(:all) do
+  #   puts "Iniciando Testes com before(:all)"
+  # end
+  # config.before(:suite) do
+  #   puts "Bloco de código antes dos testes"
+  # end
+  # config.after(:suite) do
+  #   puts "Bloco de código depois dos testes"
+  # end
   # config.after(:each) do
   #   puts "--------------------------------------"
   # end
