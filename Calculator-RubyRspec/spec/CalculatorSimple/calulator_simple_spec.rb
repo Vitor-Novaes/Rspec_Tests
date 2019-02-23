@@ -183,7 +183,7 @@ describe "Test Double" do
 
 end
 
-# Stubs: Forçar uma resposta específica de um colaborador
+# Stubs: Forçar uma resposta específica de um colaborador (Fase de Setup)
 describe "Stub" do
     it '#Has_Finished?' do
        student = Students.new
@@ -222,3 +222,71 @@ describe "Stub" do
 
 end
 
+# Mocks :  Usados para testar comportamentos (Fase Verify)
+describe "Mocks" do
+    
+    it '#bar' do
+        # Setup
+        student = double('Student') # Objeto Falso
+        
+        # Verify
+        expect(student).to receive(:bar)
+
+        # Exercise
+        student.bar
+    end
+
+    it 'args' do
+        student = double('Student') # Objeto Falso
+        
+        expect(student).to receive(:foo).with(123) # mock
+        allow(student).to receive_messages(foo: "123") # stub
+
+        # Exercise
+        student.foo(123)
+    end
+
+    it 'Repetição' do
+        student = double('Student') # Objeto Falso
+        
+        expect(student).to receive(:foo).with(123).twice # mock
+        # expect(student).to receive(:foo).with(123).once
+        # expect(student).to receive(:foo).with(123).exactly(3).times
+        # expect(student).to receive(:foo).with(123).at_least(:once) ... twice ...
+        # expect(student).to receive(:foo).with(123).at_least(n).times
+
+        allow(student).to receive_messages(foo: "123") # stub
+
+        # Exercise
+        student.foo(123)
+        student.foo(123)
+    end
+
+
+    it 'retorno' do
+        student = double('Student') # Objeto Falso
+        
+        expect(student).to receive(:foo).with(123).and_return(false) # mock
+        # allow(student).to receive_messages(foo: true) # stub
+
+        # Exercise
+        puts student.foo(123) # => false
+        # Mock força o retorno do comportamento :foo para false
+    end
+
+    
+end
+
+# As_null_object
+describe "As_null_object" do
+    it 'test' do
+        user = double('User').as_null_object # Objeto Falso
+        allow(user).to receive(:name).and_return("Vitor Novaes")
+        allow(user).to receive(:password).and_return("123456")
+        
+        expect(user).to respond_to(:name)
+        expect(user).to respond_to(:password)
+        user.name
+    end
+
+end
